@@ -2,6 +2,31 @@
 
 매일 23:00:00 마다 데이터 수집(crawling) 및 INSERT 하는 프로그램  
 
+# 주요 API 제공처
+
+- 한국은행 경제 통계 시스템
+  - http://ecos.bok.or.kr/
+  - http://ecos.bok.or.kr/jsp/openapi/OpenApiController.jsp
+- 금융감독원 DART (금융감독원 전자 공시 시스템)
+  - 재무제표 공부 중에 알게된 사이트
+  - [공식 페이지](http://dart.fss.or.kr/)
+    - 전자공시시스템
+    - URL
+      - http://dart.fss.or.kr/
+  - [오픈 DART](https://opendart.fss.or.kr/)
+    - DART 에서 제공하는 전자공시 OPEN API 제공 서비스
+    - URL
+      - https://opendart.fss.or.kr/
+  - [오픈 API 소개](https://opendart.fss.or.kr/intro/main.do)
+- KRX
+  - 솔직히 좀 ... 구리다. 
+  - 기업대상으로만 데이터 제공하는 것도 조금 싫다.
+  - 그래도 브라우저 크롤링할 때에는 유용하니 남겨두자...
+  - http://www.krx.co.kr/main/main.jsp
+  - ex) 
+    - 상장회사 검색
+      - http://marketdata.krx.co.kr/mdi#document=040601
+
 # 크롤링 대상
 
 - 한국은행 (거시지표 위주)
