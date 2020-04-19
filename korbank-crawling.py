@@ -73,7 +73,7 @@ def df_to_sql(rest_data, table_name):
                      con=alchemy_conn,
                      index=False,
                      if_exists='replace',   # {'fail', 'replace', 'append'}, default : fail
-                     schema='public')
+                     schema='ec2_web_stockdata')
 
     # -- select database insert result
     df_select = pandas_sql.read_sql_query("select * from {}".format(table_name), alchemy_conn)
@@ -105,25 +105,25 @@ def korbank_url(insert_function):
 # 1) kospi
 @korbank_url
 def kospi_day_insert(url):
-    df_to_sql(get_korbank_result(url), 'stock_kospi_day')
+    df_to_sql(get_korbank_result(url), 'kospi_day')
 
 
 # 2) 기업대출
 @korbank_url
 def corporate_insert(url):
-    df_to_sql(get_korbank_result(url), 'economy_corporate_loan_month')
+    df_to_sql(get_korbank_result(url), 'loan_corporate_month')
 
 
 # 3) 가계 대출
 @korbank_url
 def household_loan_month(url):
-    df_to_sql(get_korbank_result(url), 'economy_household_loan_month')
+    df_to_sql(get_korbank_result(url), 'loan_household_month')
 
 
 # 4) 환율
 @korbank_url
 def exchange_rate_dollar_day(url):
-    df_to_sql(get_korbank_result(url), 'economy_exchange_rate_dollar_day')
+    df_to_sql(get_korbank_result(url), 'exchange_rate_dollar_day')
 
 
 if __name__ == '__main__':
