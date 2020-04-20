@@ -36,6 +36,7 @@ def daterange(start_date, end_date):
 start_date = date(1970, 1, 1)
 end_date = date(2040, 12, 31)
 
+data_insert_list = []
 for date_string in daterange(start_date, end_date):
     print(date_string.strftime("%Y%m%d"))
 
@@ -51,12 +52,14 @@ for date_string in daterange(start_date, end_date):
         'v_dd': date_dd,
         'v_date': date_all
     }
-    data_insert = [dict_insert]
-    df_insert = DataFrame(data_insert, columns=arr_columns)
-    df_insert = df_insert.astype(dtype=type_mapper)
+    data_insert_list.append(dict_insert)
 
-    df_insert.to_sql(name="DATE_AXIS_DD",
-                     con=alchemy_conn,
-                     index=False,
-                     if_exists="replace",
-                     schema="ec2_web_stockdata")
+
+df_insert = DataFrame(data_insert_list, columns=arr_columns)
+df_insert = df_insert.astype(dtype=type_mapper)
+
+df_insert.to_sql(name="DATE_AXIS_DD",
+                 con=alchemy_conn,
+                 index=False,
+                 if_exists="replace",
+                 schema="ec2_web_stockdata")
