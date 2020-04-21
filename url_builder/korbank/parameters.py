@@ -37,3 +37,23 @@ exchange_rate_dollar_kwargs = {
     'item_code1': '036Y001',
     'item_code2': '0000001'
 }
+
+loan_usa_rate_kwargs = {
+    'from': 1,
+    'to': 20000,
+    'search_type': 'MM',
+    'start_date': '19600101',
+    'end_date': '20201231',
+    'item_code1': 'I10Y014',
+    'item_code2': 'US'
+}
+
+loan_kor_rate_kwargs = {
+    'from': 1,
+    'to': 20000,
+    'search_type': 'MM',
+    'start_date': '19600101',
+    'end_date': '20201231',
+    'item_code1': 'I10Y014',
+    'item_code2': 'KR'
+}
