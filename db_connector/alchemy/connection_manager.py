@@ -1,15 +1,8 @@
 from sqlalchemy import create_engine
 
-mysql_dev = {
-    'host': 'localhost',
-    'dbname': 'ec2_web_stockdata',
-    'user': 'admin',
-    'password': 'admin'
-}
-
 
 class ConnectionManager:
-    connection_url = "mysql+mysqlconnector://{}:{}@--:3306/{}"
+    connection_url = "mysql+mysqlconnector://{}:{}@{}:3306/{}"
     alchemy_conn = None
 
     def __init__(self, param):
@@ -42,6 +35,7 @@ class ConnectionManager:
                 cls.connection_url.format(
                     connection_info['user'],
                     connection_info['password'],
+                    connection_info['host'],
                     connection_info['dbname']
                 )
             )

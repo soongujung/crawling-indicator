@@ -20,7 +20,7 @@ from url_builder.korbank.parameters import kospi_kwargs, \
                                             loan_kor_rate_kwargs
 
 mysql_dev = {
-    'host': 'localhost',
+    'host': '--',
     'dbname': 'ec2_web_stockdata',
     'user': 'admin',
     'password': '--'
