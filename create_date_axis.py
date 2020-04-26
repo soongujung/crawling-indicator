@@ -5,11 +5,12 @@ from pandas import DataFrame
 import urllib3
 import json
 from datetime import timedelta, date
+import datetime
 
 from db_connector.alchemy.connection_manager import ConnectionManager
 
 mysql_dev = {
-    'host': 'localhost',
+    'host': '--',
     'dbname': 'ec2_web_stockdata',
     'user': 'admin',
     'password': '--'
@@ -19,12 +20,12 @@ alchemy_conn = ConnectionManager.create_connection(mysql_dev)
 
 # column
 # v_yyyy, v_mm, v_dd, v_date
-arr_columns = ['v_yyyy', 'v_mm', 'v_dd', 'v_date']
+arr_columns = ['yyyy', 'mm', 'dd', 'yyyymmdd']
 type_mapper = {
-    'v_yyyy': 'str',
-    'v_mm': 'str',
-    'v_dd': 'str',
-    'v_date': 'str',
+    'yyyy': 'str',
+    'mm': 'str',
+    'dd': 'str',
+    'yyyymmdd': 'datetime64',
 }
 
 
@@ -43,22 +44,26 @@ for date_string in daterange(start_date, end_date):
     date_yy = date_string.strftime("%Y")
     date_mm = date_string.strftime("%m")
     date_dd = date_string.strftime("%d")
-    date_all = date_string.strftime("%Y%m%d")
+    # date_all = date_string.strftime("%Y%m%d")
+
+    # yyyymmdd = datetime.datetime.strptime(date_string.strftime("%Y%m%d"), '%Y%m%d')
+    # date_all = yyyymmdd
+
+    yyyymmdd = date_string
 
     # data_insert = [date_yy, date_mm, date_dd, date_all]
     dict_insert = {
-        'v_yyyy': date_yy,
-        'v_mm': date_mm,
-        'v_dd': date_dd,
-        'v_date': date_all
+        'yyyy': date_yy,
+        'mm': date_mm,
+        'dd': date_dd,
+        'yyyymmdd': yyyymmdd
     }
     data_insert_list.append(dict_insert)
-
 
 df_insert = DataFrame(data_insert_list, columns=arr_columns)
 df_insert = df_insert.astype(dtype=type_mapper)
 
-df_insert.to_sql(name="DATE_AXIS_DD",
+df_insert.to_sql(name="date_axis_dd",
                  con=alchemy_conn,
                  index=False,
                  if_exists="replace",
