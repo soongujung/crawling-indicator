@@ -1,5 +1,6 @@
 /**
  * yyyyMMdd 시간축 테이블
+ *  일부 컬럼을 date 기반으로 변경
  */
 create table date_axis_dd
 (
