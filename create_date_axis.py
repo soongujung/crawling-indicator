@@ -62,9 +62,11 @@ for date_string in daterange(start_date, end_date):
 
 df_insert = DataFrame(data_insert_list, columns=arr_columns)
 df_insert = df_insert.astype(dtype=type_mapper)
+df_insert['yyyymmdd'] = df_insert.yyyymmdd.map(lambda x: datetime.datetime.strptime(x.strftime('%Y%m%d'), '%Y%m%d').date())
 
 df_insert.to_sql(name="date_axis_dd",
                  con=alchemy_conn,
                  index=False,
+                 index_label='yyyymmdd',
                  if_exists="replace",
                  schema="ec2_web_stockdata")
