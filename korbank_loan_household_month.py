@@ -64,7 +64,7 @@ arr_columns = get_column_list()
 dict_columns_type = get_column_types()
 
 if __name__ == '__main__':
-    url = "http://ecos.bok.or.kr/api/StatisticSearch/{}/json/kr/1/50000/005Y003/MM/19600101/20201231/BECBLA02".format(
+    url = "http://ecos.bok.or.kr/api/StatisticSearch/{}/json/kr/1/50000/005Y003/MM/19600101/20201231/BECBLA03".format(
         api_key)
 
     http = urllib3.PoolManager()
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     )
     df_loan_rate_insert = df_loan_rate_insert.astype(dtype=dict_columns_type)
 
-    df_loan_rate_insert.to_sql(name='loan_corporate_month',
+    df_loan_rate_insert.to_sql(name='loan_household_month',
                                con=alchemy_conn,
                                index=False,
                                index_label='TIME',
@@ -94,6 +94,6 @@ if __name__ == '__main__':
                                schema='ec2_web_stockdata')
 
     # -- select database insert result
-    df_kospi_select = pandas_sql.read_sql_query("select * from loan_corporate_month", alchemy_conn)
-    print("database result ::: loan_corporate_month")
+    df_kospi_select = pandas_sql.read_sql_query("select * from loan_household_month", alchemy_conn)
+    print("database result ::: loan_household_month")
     print(df_kospi_select)
