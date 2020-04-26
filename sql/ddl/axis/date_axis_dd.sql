@@ -1,15 +1,19 @@
 /**
  * yyyyMMdd 시간축 테이블
  */
-create table DATE_AXIS_DD
+create table date_axis_dd
 (
-    v_yyyy varchar(4) not null,
-    v_mm   varchar(2) not null,
-    v_dd   varchar(2) not null,
-    v_date varchar(6) not null
-        primary key
-)
-    comment '일별 시간축';
+	yyyy varchar(4) null,
+	mm varchar(2) null,
+	dd varchar(2) null,
+	yyyymmdd date not null
+);
 
-create index DATE_SERIES_DD_v_date_index
-    on DATE_AXIS_DD (v_date);
+create unique index date_axis_dd_yyyymmdd_uindex
+	on date_axis_dd (yyyymmdd);
+
+alter table date_axis_dd
+	add constraint date_axis_dd_pk
+		primary key (yyyymmdd);
+
+
