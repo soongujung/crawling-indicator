@@ -7,6 +7,7 @@ from datetime import timedelta, date
 import datetime
 from calendar import monthrange
 import copy
+import pandas as pd
 
 from db_connector.alchemy.connection_manager import ConnectionManager
 from url_builder.korbank.urls import UrlManager
@@ -92,10 +93,20 @@ if __name__ == '__main__':
         dt_end_time = dt_start_time + timedelta(dt_start_len[1])
 
         # TODO
-        # 각 월의 2일 ~ 말일 까지의 데이터를 매 Step 마다 Series 로 만들어 df에 insert
+        # 각 월의 1일 데이터를 복사해 2일 ~ 말일 까지의 데이터로 매 Step 마다 Series 로 만들어 df에 insert
         for date_string in daterange(dt_start_time, dt_end_time):
-            print(date_string)
+            dt_date = date_string.date()
+            dt_day = dt_date.day
 
+            if dt_day == 1:
+                row['TIME'] = dt_date
+            else:
+                series_temp = row.copy(deep=True)
+                df_loan_rate_insert.append(series_temp)
+
+            # print(date_string)
+
+    print(df_loan_rate_insert)
     df_loan_rate_insert.to_sql(name='loan_corporate_month',
                                con=alchemy_conn,
                                index=False,
