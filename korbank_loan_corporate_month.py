@@ -86,6 +86,16 @@ if __name__ == '__main__':
     )
     df_loan_rate_insert = df_loan_rate_insert.astype(dtype=dict_columns_type)
 
+    for index, row in df_loan_rate_insert.iterrows():
+        dt_start_time = row['TIME']
+        dt_start_len = monthrange(dt_start_time.year, dt_start_time.month)
+        dt_end_time = dt_start_time + timedelta(dt_start_len[1])
+
+        # TODO
+        # 각 월의 2일 ~ 말일 까지의 데이터를 매 Step 마다 Series 로 만들어 df에 insert
+        for date_string in daterange(dt_start_time, dt_end_time):
+            print(date_string)
+
     df_loan_rate_insert.to_sql(name='loan_corporate_month',
                                con=alchemy_conn,
                                index=False,
