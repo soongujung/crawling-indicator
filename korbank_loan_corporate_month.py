@@ -108,8 +108,7 @@ if __name__ == '__main__':
         dt_start_time = row['TIME']
         dt_start_len = monthrange(dt_start_time.year, dt_start_time.month)
         dt_end_time = dt_start_time + timedelta(dt_start_len[1])
-        # TODO
-        # 각 월의 1일 데이터를 복사해 2일 ~ 말일 까지의 데이터로 매 Step 마다 Series 로 만들어 df에 insert
+
         for date_string in daterange(dt_start_time, dt_end_time):
             dt_date = date_string.date()
             dt_day = dt_date.day
@@ -117,18 +116,10 @@ if __name__ == '__main__':
             if dt_day == 1:
                 row['TIME'] = dt_date
             else:
-                # series_temp 가 잘못 만들어지고 있다.
-                # 0,1,... 등으로 indexing 되어지고 있는데 이런 방식이 아닌 다른 방식 찾을 것.
-                series_temp = pd.Series(row.values)
+                series_temp = pd.Series(row.values, index=arr_columns)
                 series_temp['TIME'] = dt_date
                 df_as_row = DataFrame([series_temp])
                 df_alternative = pd.concat([df_as_row, df_alternative], ignore_index=True)
-
-                # df_alternative.insert(series_temp, column=arr_columns)
-                # df_loan_rate_insert.append(series_temp, ignore_index=True)
-                # df_alternative.append(series_temp, ignore_index=True)
-                # print(df_alternative)
-                # print(dt_date)
 
     print("####### #######")
     print(df_alternative)
