@@ -2,11 +2,14 @@ import pandas.io.sql as pandas_sql
 from pandas import DataFrame
 import urllib3
 import json
+import numpy as np
+import pandas as pd
 
 from datetime import timedelta, date
 import datetime
 from calendar import monthrange
 import copy
+import pandas as pd
 
 from db_connector.alchemy.connection_manager import ConnectionManager
 from url_builder.korbank.urls import UrlManager
@@ -94,6 +97,35 @@ if __name__ == '__main__':
                                schema='ec2_web_stockdata')
 
     # -- select database insert result
-    df_kospi_select = pandas_sql.read_sql_query("select * from loan_household_month", alchemy_conn)
+    df_loan_rate = pandas_sql.read_sql_query("select * from loan_household_month", alchemy_conn)
     print("database result ::: loan_household_month")
-    print(df_kospi_select)
+    print(df_loan_rate)
+
+    df_alternative = DataFrame(columns=arr_columns)
+    df_alternative = df_alternative.astype(dtype=dict_columns_type)
+
+    for i, row in df_loan_rate.iterrows():
+        dt_start_time = row['TIME']
+        dt_start_len = monthrange(dt_start_time.year, dt_start_time.month)
+        dt_end_time = dt_start_time + timedelta(dt_start_len[1])
+
+        for date_string in daterange(dt_start_time, dt_end_time):
+            dt_date = date_string.date()
+            dt_day = dt_date.day
+
+            if dt_day == 1:
+                row['TIME'] = dt_date
+            else:
+                series_temp = pd.Series(row.values, index=arr_columns)
+                series_temp['TIME'] = dt_date
+                df_as_row = DataFrame([series_temp])
+                df_alternative = pd.concat([df_as_row, df_alternative], ignore_index=True)
+
+    print("####### #######")
+    print(df_alternative)
+    df_alternative.to_sql(name='loan_household_month',
+                               con=alchemy_conn,
+                               index=False,
+                               index_label='TIME',
+                               if_exists='append',  # {'fail', 'replace', 'append'}, default : fail
+                               schema='ec2_web_stockdata')
