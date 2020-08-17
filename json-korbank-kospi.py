@@ -34,20 +34,6 @@ if __name__ == '__main__':
 
     arr_data = dict_data['StatisticSearch']['row']
 
-    # directory = 'json/document/'
-    # if not os.path.exists(directory):
-    #     os.makedirs(directory)
-
-    # f = open('json/document/test_data.json', 'w+')
-    #
-    # for e in arr_data:
-    #     stringified_json = json.dumps(e)
-    #     stringified_json = stringified_json + "\n"
-    #     print(stringified_json)
-    #     f.write(stringified_json)
-    #
-    # f.close()
-
     directory = 'json/document/'
     if not os.path.exists(directory):
         os.makedirs(directory)
