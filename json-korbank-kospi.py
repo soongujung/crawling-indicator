@@ -7,7 +7,7 @@ COLUMN_LIST = [
         'ITEM_NAME1', 'ITEM_NAME2', 'ITEM_NAME3', 'DATA_VALUE', 'TIME'
     ]
 
-api_key = 'RV1NS82MWHJGX93N28C2'
+api_key = '--'
 MM = 'MM'
 DD = 'DD'
 
@@ -20,7 +20,7 @@ def get_column_list():
 arr_columns = get_column_list()
 
 if __name__ == '__main__':
-    url = "http://ecos.bok.or.kr/api/StatisticSearch/{}/json/kr/1/50000/064Y001/DD/20200728/20201231/0001000" \
+    url = "http://ecos.bok.or.kr/api/StatisticSearch/{}/json/kr/1/50000/064Y001/DD/20200813/20201231/0001000" \
         .format(api_key)
 
     print(" ####### URL #######")
@@ -31,13 +31,13 @@ if __name__ == '__main__':
 
     str_response = ret.data.decode('utf-8')
     dict_data = json.loads(str_response)
+
     arr_data = dict_data['StatisticSearch']['row']
 
     # directory = 'json/document/'
     # if not os.path.exists(directory):
     #     os.makedirs(directory)
-    #
-    # print(" #######     #######")
+
     # f = open('json/document/test_data.json', 'w+')
     #
     # for e in arr_data:
