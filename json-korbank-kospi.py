@@ -1,22 +1,13 @@
-import pandas.io.sql as pandas_sql
-from pandas import DataFrame
 import urllib3
 import json
-
-from datetime import timedelta, date
-import datetime
-from calendar import monthrange
-import copy
-
-from url_builder.korbank.urls import UrlManager
-from url_builder.korbank.parameters import kospi_kwargs
+import os
 
 COLUMN_LIST = [
         'STAT_NAME',  'STAT_CODE',  'ITEM_CODE1', 'ITEM_CODE2', 'ITEM_CODE3',
         'ITEM_NAME1', 'ITEM_NAME2', 'ITEM_NAME3', 'DATA_VALUE', 'TIME'
     ]
 
-api_key = '-'
+api_key = 'RV1NS82MWHJGX93N28C2'
 MM = 'MM'
 DD = 'DD'
 
@@ -34,7 +25,6 @@ if __name__ == '__main__':
 
     print(" ####### URL #######")
     print(url)
-    print(" #######     #######")
 
     http = urllib3.PoolManager()
     ret = http.request("GET", url, headers={'Content-Type': 'application/json'})
@@ -43,12 +33,28 @@ if __name__ == '__main__':
     dict_data = json.loads(str_response)
     arr_data = dict_data['StatisticSearch']['row']
 
-    # [{}, {}, {} ] -> [ [] [] [] [] ...]  변환 작업
-    data_for_insert = [[datetime.datetime.strptime(dict_data[column_nm], '%Y%m%d').date() if column_nm == 'TIME' else dict_data[column_nm] for column_nm in arr_columns] for dict_data in arr_data]
+    # directory = 'json/document/'
+    # if not os.path.exists(directory):
+    #     os.makedirs(directory)
+    #
+    # print(" #######     #######")
+    # f = open('json/document/test_data.json', 'w+')
+    #
+    # for e in arr_data:
+    #     stringified_json = json.dumps(e)
+    #     stringified_json = stringified_json + "\n"
+    #     print(stringified_json)
+    #     f.write(stringified_json)
+    #
+    # f.close()
 
-    df_kospi_insert = DataFrame(data_for_insert, columns=arr_columns)
-    df_kospi_insert.to_csv('csv/test.csv', sep=',', na_rep='NaN', index=False)
+    directory = 'json/document/'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-    # JSON 방식으로도 변환 필요 ( 샘플 형식 : https://github.com/soongujung/study_archives/blob/master/ELK/elasticsearch-basic/ElasticSearch_BUCKET_AGGREGATION.md#%EC%98%88%EC%A0%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C__
-    # ElasticSearch 에서 받아들이는 데이터의 형식이 JSON의 일반형식과는 달라서 이게 잘 될지는 장담하지는 못하겠다.
-    # 다양한 JSON 을 테스트 해봐야 할 듯하다.
+    with open('json/document/test_data.json', 'w+') as f:
+        for e in arr_data:
+            stringified_json = json.dumps(e)
+            stringified_json = stringified_json + "\n"
+            print(stringified_json)
+            f.write(stringified_json)
