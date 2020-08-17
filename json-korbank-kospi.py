@@ -38,9 +38,22 @@ if __name__ == '__main__':
     if not os.path.exists(directory):
         os.makedirs(directory)
 
+    # index, id 추가 안할 때의 데이터
+    # with open('json/document/test_data.json', 'w+') as f:
+    #     for e in arr_data:
+    #         stringified_json = json.dumps(e)
+    #         stringified_json = stringified_json + "\n"
+    #         print(stringified_json)
+    #         f.write(stringified_json)
+
+    # index, id 추가 한 후의 데이터
     with open('json/document/test_data.json', 'w+') as f:
         for e in arr_data:
-            stringified_json = json.dumps(e)
+            dict_index = {'index': {'_id': e['TIME']}}
+            str_index_id = json.dumps(dict_index)
+            stringified_json = str_index_id + "\n"
+
+            stringified_json = stringified_json + json.dumps(e)
             stringified_json = stringified_json + "\n"
             print(stringified_json)
             f.write(stringified_json)
